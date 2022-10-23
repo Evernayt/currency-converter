@@ -1,0 +1,30 @@
+:root {
+  --primary-color: #1b74e4;
+  --primary-deemphasized-color: #e7f3ff;
+  --secondary-color: #e4e6eb;
+  --primary-text-color: #050505;
+  --text-color: #050505;
+  --secondary-text-color: #65676b;
+  --background-color: #f0f2f5;
+  --border-color: #dddfe2;
+  --card-background: #ffffff;
+  --danger-color: #eb5c5c;
+
+  /* COLORS: HOVER */
+  --hover-primary-color: #1a6ed8;
+  --hover-primary-deemphasized-color: #dbe7f2;
+  --hover-secondary-color: #d8dadf;
+  --hover-card-color: #f2f2f2;
+
+  /* COLORS: DISABLED */
+  --disabled-background: #e4e6eb;
+  --disabled-text: #bcbec4;
+
+  /* SIZES */
+  --border-radius: 8px;
+
+  /* SHADOWS */
+  --shadow-1: rgba(0, 0, 0, 0.1);
+  --shadow-2: rgba(0, 0, 0, 0.2);
+  --shadow-inset: rgba(255, 255, 255, 0.05);
+}

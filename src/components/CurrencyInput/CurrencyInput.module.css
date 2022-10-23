@@ -1,0 +1,105 @@
+.container {
+  position: relative;
+  width: 100%;
+  height: 48px;
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius);
+  display: flex;
+  align-items: center;
+  background-color: var(--card-background);
+}
+
+.textbox {
+  border: 0;
+  outline: 0;
+  width: 100%;
+  height: 100%;
+  font-size: 16px;
+  padding: 0 16px;
+  border-radius: var(--border-radius);
+}
+
+.select_container {
+  display: inline-block;
+  font-weight: 500;
+  white-space: nowrap;
+  user-select: none;
+}
+
+.select_btn {
+  background-color: var(--secondary-color);
+  cursor: pointer;
+  pointer-events: auto;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 8px;
+  border-radius: 6px;
+  height: 42px;
+  margin-right: 3px;
+}
+
+.select_btn:active {
+  transform: scale(0.98);
+}
+
+.textbox:disabled + .select_btn {
+  background-color: var(--card-background);
+  color: var(--disabled-text);
+  pointer-events: none;
+}
+
+.select_btn:hover {
+  background-color: var(--hover-secondary-color);
+}
+
+.input {
+  display: none;
+}
+
+.menu {
+  position: absolute;
+  border-radius: var(--border-radius);
+  padding: 8px;
+  margin-top: 12px;
+  box-shadow: 0 12px 28px 0 var(--shadow-2), 0 2px 4px 0 var(--shadow-1);
+  background-color: var(--card-background);
+  list-style-type: none;
+  z-index: 9999;
+  max-height: 240px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  right: 0;
+  margin-top: 8px;
+}
+
+.menu li {
+  display: flex;
+  align-items: center;
+}
+
+.item {
+  padding: 8px;
+  border-radius: 4px;
+  cursor: pointer;
+  white-space: nowrap;
+  width: 100%;
+  cursor: default;
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.select_container .input:not(:checked) + .item:hover {
+  background-color: var(--hover-card-color);
+  cursor: pointer;
+}
+
+.select_container .input:checked + .item {
+  background-color: var(--primary-deemphasized-color);
+}
+
+.select_btn:active,
+.item:active {
+  transform: scale(0.98);
+}
