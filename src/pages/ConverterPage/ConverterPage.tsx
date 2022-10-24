@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import { CurrencyInput, IconButton, Loader, Textbox } from "../../components";
 import { TextboxIconVariants } from "../../components/UI/Textbox/Textbox";
 import { currencies } from "../../constants/currencies";
+import { EXCHANGE_RATES_ROUTE } from "../../constants/paths";
 import getLocaleCurrency from "../../helpers/getLocaleCurrency";
 import getObjectValueByKey from "../../helpers/getObjectValueByKey";
 import { useAppDispatch, useAppSelector } from "../../hooks/redux";
@@ -9,53 +11,59 @@ import { fetchExchangeRateAPI } from "../../http/exchangeRateAPI";
 import { IconArrowRight, IconArrowsExchange } from "../../icons";
 import { ICurrency } from "../../models/ICurrency";
 import { IRates } from "../../models/IRates";
-import { setRates } from "../../store/reducers/ExchangeRateSlice";
+import {
+  setMainCurrencyAction,
+  setRatesAction,
+  setSecondaryCurrencyAction,
+} from "../../store/reducers/ExchangeRateSlice";
 import styles from "./ConverterPage.module.css";
 
-const localeCurrencyCode = getLocaleCurrency();
-const defaultMainCurrency =
-  currencies.find((x) => x.code === localeCurrencyCode) || currencies[0];
-const defaultSecondaryCurrency =
-  defaultMainCurrency.code !== "USD" ? currencies[1] : currencies[0];
+// const localeCurrencyCode = getLocaleCurrency();
+// const defaultMainCurrency =
+//   currencies.find((x) => x.code === localeCurrencyCode) || currencies[0];
+// const defaultSecondaryCurrency =
+//   defaultMainCurrency.code !== "USD" ? currencies[1] : currencies[0];
 
 const ConverterPage = () => {
   const [text, setText] = useState<string>("");
   const [errorMessage, setErrorMessage] = useState<string>("");
   const [mainValue, setMainValue] = useState<number>(0);
-  const [mainCurrency, setMainCurrency] =
-    useState<ICurrency>(defaultMainCurrency);
   const [secondaryValue, setSecondaryValue] = useState<number>(0);
-  const [secondaryCurrency, setSecondaryCurrency] = useState<ICurrency>(
-    defaultSecondaryCurrency
-  );
+  // const [secondaryCurrency, setSecondaryCurrency] = useState<ICurrency>(
+  //   defaultSecondaryCurrency
+  // );
   const [loading, setLoading] = useState<boolean>(true);
 
   const rates = useAppSelector((state) => state.exchangeRate.rates);
+  const mainCurrency = useAppSelector(
+    (state) => state.exchangeRate.mainCurrency
+  );
+  const secondaryCurrency = useAppSelector(
+    (state) => state.exchangeRate.secondaryCurrency
+  );
 
   const dispatch = useAppDispatch();
 
   useEffect(() => {
     const controller = new AbortController();
     setLoading(true);
-    fetchExchangeRateAPI(defaultMainCurrency.code, controller.signal)
+    fetchExchangeRateAPI(mainCurrency.code, controller.signal)
       .then((data) => {
-        dispatch(setRates(data.rates));
+        dispatch(setRatesAction(data.rates));
 
-        const mainRate = getObjectValueByKey(
-          data.rates,
-          defaultMainCurrency.code
-        );
-        setMainCurrency((prevState) => {
-          return { ...prevState, rate: mainRate };
-        });
+        const mainRate = getObjectValueByKey(data.rates, mainCurrency.code);
+        dispatch(setMainCurrencyAction({ ...mainCurrency, rate: mainRate }));
 
         const secondaryRate = getObjectValueByKey(
           data.rates,
           secondaryCurrency.code
         );
-        setSecondaryCurrency((prevState) => {
-          return { ...prevState, rate: secondaryRate };
-        });
+        dispatch(
+          setSecondaryCurrencyAction({
+            ...secondaryCurrency,
+            rate: secondaryRate,
+          })
+        );
       })
       .catch(() => {})
       .finally(() => setLoading(false));
@@ -97,10 +105,10 @@ const ConverterPage = () => {
       fetchExchangeRateAPI(mainCurrency.code)
         .then((data) => {
           resolve(data.rates);
-          dispatch(setRates(data.rates));
+          dispatch(setRatesAction(data.rates));
 
           const mainRate = getObjectValueByKey(data.rates, mainCurrency.code);
-          setMainCurrency({ ...mainCurrency, rate: mainRate });
+          dispatch(setMainCurrencyAction({ ...mainCurrency, rate: mainRate }));
 
           secondaryCurrencyChangeHandler(
             data.rates,
@@ -121,7 +129,7 @@ const ConverterPage = () => {
     const secondaryRate = getObjectValueByKey(rates, currency.code);
     const secondaryValue = Number((mainValue * secondaryRate).toFixed(2));
     setSecondaryValue(secondaryValue);
-    setSecondaryCurrency({ ...currency, rate: secondaryRate });
+    dispatch(setSecondaryCurrencyAction({ ...currency, rate: secondaryRate }));
   };
 
   const swap = () => {
@@ -131,10 +139,10 @@ const ConverterPage = () => {
     setLoading(true);
     fetchExchangeRateAPI(newMainCurrency.code)
       .then((data) => {
-        dispatch(setRates(data.rates));
+        dispatch(setRatesAction(data.rates));
 
         const mainRate = getObjectValueByKey(data.rates, newMainCurrency.code);
-        setMainCurrency({ ...newMainCurrency, rate: mainRate });
+        dispatch(setMainCurrencyAction({ ...newMainCurrency, rate: mainRate }));
 
         const secondaryRate = getObjectValueByKey(
           data.rates,
@@ -142,7 +150,12 @@ const ConverterPage = () => {
         );
         const secondaryValue = Number((mainValue * secondaryRate).toFixed(2));
         setSecondaryValue(secondaryValue);
-        setSecondaryCurrency({ ...newSecondaryCurrency, rate: secondaryRate });
+        dispatch(
+          setSecondaryCurrencyAction({
+            ...newSecondaryCurrency,
+            rate: secondaryRate,
+          })
+        );
       })
       .finally(() => setLoading(false));
   };
@@ -163,7 +176,6 @@ const ConverterPage = () => {
       setErrorMessage("You need to write currency codes");
       return;
     }
-    setErrorMessage("");
 
     let newMainCurrency;
     let newSecondaryCurrency;
@@ -191,9 +203,12 @@ const ConverterPage = () => {
           const secondaryRate = getObjectValueByKey(data, secondaryCode);
           mainValueChangeHandler(newMainValue, secondaryRate);
 
+          setErrorMessage("");
           setText("");
         }
       );
+    } else {
+      setErrorMessage("You need to write correct currency codes");
     }
   };
 
@@ -258,6 +273,9 @@ const ConverterPage = () => {
         } = ${secondaryCurrency.rate.toFixed(2)} ${
           secondaryCurrency.name
         }`}</div>
+        <Link className="link" to={EXCHANGE_RATES_ROUTE}>
+          Other exchange rates
+        </Link>
       </div>
     </div>
   );
