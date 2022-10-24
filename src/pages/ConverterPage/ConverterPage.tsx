@@ -274,7 +274,7 @@ const ConverterPage = () => {
           secondaryCurrency.name
         }`}</div>
         <Link className="link" to={EXCHANGE_RATES_ROUTE}>
-          Other exchange rates
+          Exchange rates relative to the base
         </Link>
       </div>
     </div>

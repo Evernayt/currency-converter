@@ -22,7 +22,8 @@ const ExchangeRatesPage = () => {
     for (let index = 0; index < currenciesWithoutMain.length; index++) {
       const currency = currenciesWithoutMain[index];
       const rate = getObjectValueByKey(rates, currency.code);
-      result.push({ ...currency, rate });
+      const mainRate = 1 / rate;
+      result.push({ ...currency, rate: mainRate });
     }
 
     return result;
@@ -35,11 +36,9 @@ const ExchangeRatesPage = () => {
           Back to converter
         </Link>
         {getCurrencies().map((currency) => (
-          <div className={styles.currency_rate} key={currency.code}>{`${
-            mainCurrency.rate
-          } ${mainCurrency.name} = ${currency.rate.toFixed(2)} ${
+          <div className={styles.currency_rate} key={currency.code}>{`1 ${
             currency.name
-          }`}</div>
+          } = ${currency.rate.toFixed(2)} ${mainCurrency.name}`}</div>
         ))}
       </div>
     </div>
