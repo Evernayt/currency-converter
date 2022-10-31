@@ -1,0 +1,25 @@
+{
+  "files": {
+    "main.css": "/currency-converter/static/css/main.56aacc5b.css",
+    "main.js": "/currency-converter/static/js/main.ad8f8427.js",
+    "static/media/KZT.svg": "/currency-converter/static/media/KZT.2845e6eb502cb41c1ec7414465f53bfa.svg",
+    "static/media/EUR.svg": "/currency-converter/static/media/EUR.54e17c7aef695997ba288eb0377a944d.svg",
+    "static/media/USD.svg": "/currency-converter/static/media/USD.746d7e9de2e6044f13e5ed4002c9ae6d.svg",
+    "static/media/CNY.svg": "/currency-converter/static/media/CNY.9eae178688817a9b469debb51e2d1fa7.svg",
+    "static/media/GBP.svg": "/currency-converter/static/media/GBP.a031c21fa1f375d9157e23d00a20b447.svg",
+    "static/media/BYN.svg": "/currency-converter/static/media/BYN.0dc6aa8189e37f525bcbe7fd196321ff.svg",
+    "static/media/CHF.svg": "/currency-converter/static/media/CHF.40d0376a4a43e3f59b8bf3d843fec7df.svg",
+    "static/media/TRY.svg": "/currency-converter/static/media/TRY.e0ad9a68ca12a46ebbfaa79db12f92bf.svg",
+    "static/media/RUB.svg": "/currency-converter/static/media/RUB.8f342e967ca1097f7dd86f464197bf05.svg",
+    "static/media/UAH.svg": "/currency-converter/static/media/UAH.de9cc6a8a3a61bc0247a0389c9b807d3.svg",
+    "index.html": "/currency-converter/index.html",
+    "static/media/PLN.svg": "/currency-converter/static/media/PLN.7fb582c94c083081e8ed6ba335c23be6.svg",
+    "static/media/JPY.svg": "/currency-converter/static/media/JPY.f30a3943d6946fa2202eacea9af09ec1.svg",
+    "main.56aacc5b.css.map": "/currency-converter/static/css/main.56aacc5b.css.map",
+    "main.ad8f8427.js.map": "/currency-converter/static/js/main.ad8f8427.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.56aacc5b.css",
+    "static/js/main.ad8f8427.js"
+  ]
+}
